@@ -45,12 +45,12 @@ namespace WPFCoreEx.Hosting
 			{
 				_applicationStartedRegistration = _hostApplicationLifetime.ApplicationStarted.Register(state =>
 				{
-					((WPFLifetime)state).OnApplicationStarted();
+					((WPFLifetime)state!).OnApplicationStarted();
 				},
 				this);
 				_applicationStoppingRegistration = _hostApplicationLifetime.ApplicationStopping.Register(state =>
 				{
-					((WPFLifetime)state).OnApplicationStopping();
+					((WPFLifetime)state!).OnApplicationStopping();
 				},
 				this);
 			}
@@ -78,7 +78,7 @@ namespace WPFCoreEx.Hosting
 			AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
 		}
 
-		private void OnProcessExit(object sender, EventArgs e)
+		private void OnProcessExit(object? sender, EventArgs e)
 		{
 			try
 			{
