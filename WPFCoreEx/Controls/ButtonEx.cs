@@ -6,6 +6,7 @@ using System.Windows.Media;
 
 namespace WPFCoreEx.Controls
 {
+	//TODO: review default buttonEx ITS UGLY!
 	public sealed class ButtonEx : Button
 	{
 		static ButtonEx()
