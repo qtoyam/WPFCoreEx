@@ -7,14 +7,16 @@
 		xmlns:exc="clr-namespace:WPFCoreEx.Controls;assembly=WPFCoreEx"
 		xmlns:exconv="clr-namespace:WPFCoreEx.Converters;assembly=WPFCoreEx"
         mc:Ignorable="d"
-		Background="Purple"
-		d:DataContext="{d:DesignInstance Type=local:VM}"
+		Background="Black"
+		d:DataContext="{d:DesignInstance Type=local:VM, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="450" Width="800">
-	<Window.DataContext>
-		<local:VM/>
-	</Window.DataContext>
 	<Grid>
-		<Button Content="Button" HorizontalAlignment="Left" Margin="571,164,0,0" VerticalAlignment="Top"
-				/>
+		<exc:DataGridEx Style="{StaticResource DataGridEx_Transparent}" ItemsSource="{Binding Persons}"
+						ForegroundHeader="Cyan" ForegroundCell="Green">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Aboba1" Binding="{Binding Name}" Width="100"/>
+				<DataGridTextColumn Header="Roflan2" Binding="{Binding FirstName}" Width="100"/>
+			</DataGrid.Columns>
+		</exc:DataGridEx>
 	</Grid>
 </Window>

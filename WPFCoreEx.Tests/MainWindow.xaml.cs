@@ -23,6 +23,7 @@ namespace WPFCoreEx.Tests
 		public MainWindow()
 		{
 			InitializeComponent();
+			DataContext = new VM();
 		}
 	}
 }

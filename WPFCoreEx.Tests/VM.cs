@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,27 @@ namespace WPFCoreEx.Tests
 
 	public class VM : NotifyPropBase
 	{
-		
+		public ObservableCollection<Person> Persons { get; } = new();
+
+		public VM()
+		{
+			Persons.Add(new("Sad", "Boba"));
+			Persons.Add(new("ASDad", "Boba"));
+			Persons.Add(new("Gbcc", "Rossd"));
+			Persons.Add(new("Fsdgt", "Rossd"));
+		}
+	}
+
+	public class Person
+	{
+#nullable disable
+		public string Name { get; set; }
+		public string FirstName { get; set; }
+
+		public Person(string name, string firstName)
+		{
+			Name = name;
+			FirstName = firstName;
+		}
 	}
 }

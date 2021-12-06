@@ -217,7 +217,7 @@
 	</Style>
 	<!--#endregion MenuItemEx-->
 
-
+	
 	<!--#region TextBoxEx-->
 	<SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
 	<SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
