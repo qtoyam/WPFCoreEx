@@ -1,20 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace WPFCoreEx.Converters
 {
-	/// <summary>
-	/// Visible if object not null, otherwise collapsed.
-	/// </summary>
-	[ValueConversion(typeof(object), typeof(Visibility))]
-	public class ObjectNotNullVisibilityConverter : MarkupExtension, IValueConverter
+	[ValueConversion(typeof(int), typeof(bool))]
+	public class IntPositiveBooleanConverter : MarkupExtension, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return value == null ? Visibility.Collapsed : Visibility.Visible;
+			return (int)value >= 0;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

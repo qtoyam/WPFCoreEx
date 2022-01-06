@@ -21,8 +21,15 @@ namespace WPFCoreEx.Services
 		public void RegisterAllDefault(Window owner)
 		{
 			Owner = owner;
-			MessageReceived = SilentMessageReceived = WarningReceived = ErrorReceived = (msg) => MessageBox.Show(Owner, msg);
-			ExceptionReceived = (ex) => MessageBox.Show(Owner, ex.Message);
+			var t = (string msg) =>
+			{
+				MessageBox.Show(owner,msg);
+			};
+			MessageReceived = t;
+			SilentMessageReceived = t;
+			WarningReceived = t;
+			ErrorReceived = t;
+			ExceptionReceived = (ex) => t(ex.Message);
 		}
 
 		public void UnregisterAll()

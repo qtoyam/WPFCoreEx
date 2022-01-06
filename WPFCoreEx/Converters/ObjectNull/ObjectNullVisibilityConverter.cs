@@ -6,6 +6,9 @@ using System.Windows.Markup;
 
 namespace WPFCoreEx.Converters
 {
+	/// <summary>
+	/// Visible if object null, otherwise collapsed.
+	/// </summary>
 	[ValueConversion(typeof(object), typeof(Visibility))]
 	public class ObjectNullVisibilityConverter : MarkupExtension, IValueConverter
 	{

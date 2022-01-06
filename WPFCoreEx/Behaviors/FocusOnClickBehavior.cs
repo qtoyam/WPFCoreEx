@@ -6,10 +6,20 @@ namespace WPFCoreEx.Behaviors
 {
 	public class FocusOnClickBehavior : Behavior<UIElement>
 	{
-		protected override void OnAttached() => AssociatedObject.MouseLeftButtonUp += AssociatedObject_MouseLeftButtonUp;
+		protected override void OnAttached()
+		{
+			AssociatedObject.PreviewMouseLeftButtonUp += Click;
+			base.OnAttached();
+		}
+		protected override void OnDetaching()
+		{
+			AssociatedObject.PreviewMouseLeftButtonUp -= Click;
+			base.OnDetaching();
+		}
 
-		private void AssociatedObject_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e) => AssociatedObject.Focus();
-
-		protected override void OnDetaching() => AssociatedObject.MouseLeftButtonUp -= AssociatedObject_MouseLeftButtonUp;
+		private void Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			AssociatedObject.Focus();
+		}
 	}
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,32 +14,8 @@ namespace WPFCoreEx.Behaviors
 	}
 	public sealed class InputHandleBehavior : Behavior<TextBox>
 	{
-		public MaskType MaskType
-		{
-			get { return (MaskType)GetValue(MaskTypeProperty); }
-			set { SetValue(MaskTypeProperty, value); }
-		}
-		public static readonly DependencyProperty MaskTypeProperty =
-			DependencyProperty.Register("MaskType", typeof(MaskType), typeof(InputHandleBehavior), new PropertyMetadata(MaskType.Custom));
-
-		public string? CustomRegex
-		{
-			get { return (string?)GetValue(CustomRegexProperty); }
-			set { SetValue(CustomRegexProperty, value); }
-		}
-		public static readonly DependencyProperty CustomRegexProperty =
-			DependencyProperty.Register("CustomRegex", typeof(string), typeof(InputHandleBehavior), new PropertyMetadata(null));
-
-		#region lazy static regex
-		private static readonly Lazy<Regex> _numRegex = new(() => new Regex(@"^[0-9]+$", RegexOptions.Compiled), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
-		#endregion //lazy static regex
-
-
-		private Regex _regex = null!;
 		protected override void OnAttached()
 		{
-			base.OnAttached();
-
 			_regex = MaskType switch
 			{
 				MaskType.OnlyDigits => _numRegex.Value,
@@ -52,16 +24,41 @@ namespace WPFCoreEx.Behaviors
 			};
 			AssociatedObject.PreviewTextInput += Filter_Input;
 			DataObject.AddPastingHandler(AssociatedObject, Filter_paste);
+			base.OnAttached();
 		}
-
-
 		protected override void OnDetaching()
 		{
-			base.OnDetaching();
-
 			AssociatedObject.PreviewTextInput -= Filter_Input;
 			DataObject.RemovePastingHandler(AssociatedObject, Filter_paste);
+			_regex = null!;
+			base.OnDetaching();
 		}
+
+		private Regex _regex = null!;
+
+		public MaskType MaskType
+		{
+			get => (MaskType)GetValue(MaskTypeProperty);
+			set => SetValue(MaskTypeProperty, value);
+		}
+		public static readonly DependencyProperty MaskTypeProperty =
+			DependencyProperty.Register("MaskType", typeof(MaskType), typeof(InputHandleBehavior),
+				new PropertyMetadata(MaskType.Custom));
+
+		public string? CustomRegex
+		{
+			get => (string?)GetValue(CustomRegexProperty);
+			set => SetValue(CustomRegexProperty, value);
+		}
+		public static readonly DependencyProperty CustomRegexProperty =
+			DependencyProperty.Register("CustomRegex", typeof(string), typeof(InputHandleBehavior),
+				new PropertyMetadata(null));
+
+		#region lazy static regex
+		private static readonly Lazy<Regex> _numRegex = new(() => new Regex(@"^[0-9]+$", RegexOptions.Compiled), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+		#endregion //lazy static regex
+
+
 		private void Filter_paste(object sender, DataObjectPastingEventArgs e)
 		{
 			if (e.SourceDataObject.GetData(DataFormats.UnicodeText, false) is string paste_string)

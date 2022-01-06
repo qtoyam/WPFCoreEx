@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using WPFCoreEx.Controls;
+
 namespace WPFCoreEx.Tests
 {
 	/// <summary>
@@ -23,7 +26,19 @@ namespace WPFCoreEx.Tests
 		public MainWindow()
 		{
 			InitializeComponent();
-			DataContext = new VM();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			TB.IsReadOnly = !TB.IsReadOnly;
+			//TB.Visibility = TB.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+		}
+
+		private void Button_Click_1(object sender, RoutedEventArgs e)
+		{
+			var m = TB.Margin;
+			m.Left += 10;
+			TB.Margin = m;
 		}
 	}
 }

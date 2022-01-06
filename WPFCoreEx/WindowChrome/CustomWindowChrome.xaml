@@ -1,0 +1,107 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:exc="clr-namespace:WPFCoreEx.Controls"
+					xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+					xmlns:exb="clr-namespace:WPFCoreEx.Behaviors"
+					xmlns:sys="clr-namespace:System;assembly=netstandard"
+					xmlns:exconv="clr-namespace:WPFCoreEx.Converters"
+					xmlns:exwcex="clr-namespace:WPFCoreEx.WindowChrome">
+	<sys:Double x:Key="WindowChromeHeight">30</sys:Double>
+
+	<Style x:Key="CustomWindowChrome" TargetType="{x:Type Window}">
+		<Setter Property="WindowChrome.WindowChrome">
+			<Setter.Value>
+				<WindowChrome CaptionHeight="{StaticResource WindowChromeHeight}"
+							  UseAeroCaptionButtons="False"/>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Window}">
+					<Border x:Name="PART_WindowBorder"
+							BorderThickness="0"
+							Background="{TemplateBinding Background}">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<DockPanel Grid.Row="0"
+									   LastChildFill="False"
+									   Height="{StaticResource WindowChromeHeight}">
+								<DockPanel.Resources>
+									<Style x:Key="WindowChromeButtonStyle" TargetType="exc:ButtonEx">
+										<Setter Property="DockPanel.Dock" Value="Right"/>
+										<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+										<Setter Property="OpacityChanging" Value="True"/>
+										<Setter Property="BorderBrush" Value="{x:Null}"/>
+										<Setter Property="BorderThickness" Value="0"/>
+										<Setter Property="Background" Value="Transparent"/>
+										<Setter Property="BackgroundMouseOver" Value="#666666"/>
+										<Setter Property="BackgroundClick" Value="#333333"/>
+										<Setter Property="Width" Value="{StaticResource WindowChromeHeight}"/>
+										<Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+																				Path=(exwcex:WindowChromeEx.Foreground)}"/>
+									</Style>
+								</DockPanel.Resources>
+								<StackPanel DockPanel.Dock="Left"
+											Orientation="Horizontal"
+											Margin="5"
+											Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+															Path=(exwcex:WindowChromeEx.Content),
+															Converter={exconv:ObjectNullVisibilityConverter}}">
+									<Image Source="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+													Path=(exwcex:WindowChromeEx.TitleImage)}"/>
+									<TextBlock TextAlignment="Center"
+											   VerticalAlignment="Center"
+											   Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+																				Path=(exwcex:WindowChromeEx.Foreground)}"
+											   Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+														Path=(exwcex:WindowChromeEx.TitleText)}"/>
+								</StackPanel>
+								<ContentPresenter DockPanel.Dock="Left"
+												  Content="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+															Path=(exwcex:WindowChromeEx.Content)}"
+												  Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+																Path=(exwcex:WindowChromeEx.Content),
+																Converter={exconv:ObjectNotNullVisibilityConverter}}"/>
+								<exc:ButtonEx Content="❌"
+											  Style="{StaticResource WindowChromeButtonStyle}">
+									<i:Interaction.Behaviors>
+										<exb:CloseWindowBehavior/>
+									</i:Interaction.Behaviors>
+								</exc:ButtonEx>
+								<exc:ButtonEx Content="🗖"
+											  Style="{StaticResource WindowChromeButtonStyle}"
+											  Visibility="{TemplateBinding Property=ResizeMode,
+															Converter={exconv:EnumEqualsVisibilityConverter},
+															ConverterParameter={x:Static ResizeMode.CanResize}}">
+									<i:Interaction.Behaviors>
+										<exb:MaximizeWindowBehavior/>
+									</i:Interaction.Behaviors>
+								</exc:ButtonEx>
+								<exc:ButtonEx Content="🗕"
+											  Style="{StaticResource WindowChromeButtonStyle}">
+									<i:Interaction.Behaviors>
+										<exb:MinimizeWindowBehavior/>
+									</i:Interaction.Behaviors>
+								</exc:ButtonEx>
+							</DockPanel>
+							<Border Grid.Row="1">
+								<ContentPresenter Content="{TemplateBinding Content}"/>
+							</Border>
+						</Grid>
+					</Border>
+
+					<ControlTemplate.Triggers>
+						<Trigger Property="WindowState" Value="Maximized">
+							<Setter TargetName="PART_WindowBorder"
+									Property="BorderThickness"
+									Value="8"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

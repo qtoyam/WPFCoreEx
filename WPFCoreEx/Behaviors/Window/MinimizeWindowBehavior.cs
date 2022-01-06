@@ -1,26 +1,29 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
+
+using Microsoft.Xaml.Behaviors;
 
 namespace WPFCoreEx.Behaviors
 {
-	public class MinimizeAppBehavior : Behavior<ButtonBase>
+	public class MinimizeWindowBehavior : Behavior<ButtonBase>
 	{
-		private Window parent = null!;
+		private Window _window = null!;
 		protected override void OnAttached()
 		{
-			parent = Window.GetWindow(AssociatedObject);
+			_window = Window.GetWindow(AssociatedObject);
 			AssociatedObject.Click += AssociatedObject_Click;
+			base.OnAttached();
 		}
 		protected override void OnDetaching()
 		{
 			AssociatedObject.Click -= AssociatedObject_Click;
-			parent = null!;
+			_window = null!;
+			base.OnDetaching();
 		}
 
 		private void AssociatedObject_Click(object sender, RoutedEventArgs e)
 		{
-			parent.WindowState = WindowState.Minimized;
+			_window.WindowState = WindowState.Minimized;
 		}
 	}
 }

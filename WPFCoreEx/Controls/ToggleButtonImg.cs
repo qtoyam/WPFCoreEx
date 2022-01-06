@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace WPFCoreEx.Controls
 {
-	public class ButtonEx : Button
+	//TODO: throw if trying to set content
+	public class ToggleButtonImg : ToggleButton
 	{
-		static ButtonEx() => DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonEx),
-			new FrameworkPropertyMetadata(typeof(ButtonEx)));
+		static ToggleButtonImg() => DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonImg),
+			new FrameworkPropertyMetadata(typeof(ToggleButtonImg)));
 
 		#region Backgrounds
 		public Brush BackgroundMouseOver
@@ -17,7 +18,7 @@ namespace WPFCoreEx.Controls
 			set => SetValue(BackgroundMouseOverProperty, value);
 		}
 		public static readonly DependencyProperty BackgroundMouseOverProperty =
-			DependencyProperty.Register("BackgroundMouseOver", typeof(Brush), typeof(ButtonEx),
+			DependencyProperty.Register("BackgroundMouseOver", typeof(Brush), typeof(ToggleButtonImg),
 				new PropertyMetadata());
 
 		public Brush BackgroundClick
@@ -26,7 +27,7 @@ namespace WPFCoreEx.Controls
 			set => SetValue(BackgroundClickProperty, value);
 		}
 		public static readonly DependencyProperty BackgroundClickProperty =
-			DependencyProperty.Register("BackgroundClick", typeof(Brush), typeof(ButtonEx),
+			DependencyProperty.Register("BackgroundClick", typeof(Brush), typeof(ToggleButtonImg),
 				new PropertyMetadata());
 
 
@@ -36,19 +37,18 @@ namespace WPFCoreEx.Controls
 			set => SetValue(BackgroundDisabledProperty, value);
 		}
 		public static readonly DependencyProperty BackgroundDisabledProperty =
-			DependencyProperty.Register("BackgroundDisabled", typeof(Brush), typeof(ButtonEx),
+			DependencyProperty.Register("BackgroundDisabled", typeof(Brush), typeof(ToggleButtonImg),
 				new PropertyMetadata());
 		#endregion //Backgrounds
 
 		#region Opacity
-
 		public double OpacityDefault
 		{
 			get => (double)GetValue(OpacityDefaultProperty);
 			set => SetValue(OpacityDefaultProperty, value);
 		}
 		public static readonly DependencyProperty OpacityDefaultProperty =
-			DependencyProperty.Register("OpacityDefault", typeof(double), typeof(ButtonEx),
+			DependencyProperty.Register("OpacityDefault", typeof(double), typeof(ToggleButtonImg),
 				new PropertyMetadata());
 
 		public double OpacityMouseOver
@@ -57,8 +57,8 @@ namespace WPFCoreEx.Controls
 			set => SetValue(OpacityMouseOverProperty, value);
 		}
 		public static readonly DependencyProperty OpacityMouseOverProperty =
-			DependencyProperty.Register("OpacityMouseOver", typeof(double), typeof(ButtonEx),
-				new PropertyMetadata());
+			DependencyProperty.Register("OpacityMouseOver", typeof(double), typeof(ToggleButtonImg),
+				 new PropertyMetadata());
 
 		public double OpacityClick
 		{
@@ -66,10 +66,29 @@ namespace WPFCoreEx.Controls
 			set => SetValue(OpacityClickProperty, value);
 		}
 		public static readonly DependencyProperty OpacityClickProperty =
-			DependencyProperty.Register("OpacityClick", typeof(double), typeof(ButtonEx),
+			DependencyProperty.Register("OpacityClick", typeof(double), typeof(ToggleButtonImg),
+				 new PropertyMetadata());
+		#endregion //Opacity
+
+		#region Images
+		public ImageSource UncheckedImage
+		{
+			get => (ImageSource)GetValue(UncheckedImageProperty);
+			set => SetValue(UncheckedImageProperty, value);
+		}
+		public static readonly DependencyProperty UncheckedImageProperty =
+			DependencyProperty.Register("UncheckedImage", typeof(ImageSource), typeof(ToggleButtonImg),
 				new PropertyMetadata());
 
-		#endregion //Opacity
+		public ImageSource CheckedImage
+		{
+			get => (ImageSource)GetValue(CheckedImageProperty);
+			set => SetValue(CheckedImageProperty, value);
+		}
+		public static readonly DependencyProperty CheckedImageProperty =
+			DependencyProperty.Register("CheckedImage", typeof(ImageSource), typeof(ToggleButtonImg),
+				new PropertyMetadata());
+		#endregion //Images
 
 		#region Additional
 		public CornerRadius CornerRadius
@@ -78,7 +97,7 @@ namespace WPFCoreEx.Controls
 			set => SetValue(CornerRadiusProperty, value);
 		}
 		public static readonly DependencyProperty CornerRadiusProperty =
-			DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ButtonEx),
+			DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ToggleButtonImg),
 				new PropertyMetadata());
 		#endregion //Additional
 
@@ -89,23 +108,23 @@ namespace WPFCoreEx.Controls
 			set => SetValue(OpacityChangingProperty, value);
 		}
 		public static readonly DependencyProperty OpacityChangingProperty =
-			DependencyProperty.Register("OpacityChanging", typeof(bool), typeof(ButtonEx),
+			DependencyProperty.Register("OpacityChanging", typeof(bool), typeof(ToggleButtonImg),
 				new PropertyMetadata(OnOpacityChangingChanged));
 		private static void OnOpacityChangingChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 		{
-			if (obj is ButtonEx be)
+			if (obj is ToggleButtonImg tbe)
 			{
 				if (args.NewValue is true)
 				{
-					be.OpacityDefault = 0.65d;
-					be.OpacityMouseOver = 0.85d;
-					be.OpacityClick = 1.0d;
+					tbe.OpacityDefault = 0.65d;
+					tbe.OpacityMouseOver = 0.85d;
+					tbe.OpacityClick = 1.0d;
 				}
 				else
 				{
-					be.OpacityDefault = 1;
-					be.OpacityMouseOver = 1;
-					be.OpacityClick = 1;
+					tbe.OpacityDefault = 1;
+					tbe.OpacityMouseOver = 1;
+					tbe.OpacityClick = 1;
 				}
 			}
 		}
@@ -116,20 +135,20 @@ namespace WPFCoreEx.Controls
 			set => SetValue(NoBackgroundProperty, value);
 		}
 		public static readonly DependencyProperty NoBackgroundProperty =
-			DependencyProperty.Register("NoBackground", typeof(bool), typeof(ButtonEx),
+			DependencyProperty.Register("NoBackground", typeof(bool), typeof(ToggleButtonImg),
 				new PropertyMetadata(OnNoBackgroundChanged));
 		private static void OnNoBackgroundChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 		{
-			if (obj is ButtonEx be)
+			if (obj is ToggleButtonImg tbe)
 			{
 				if (args.NewValue is true)
 				{
-					be.Background = Brushes.Transparent;
-					be.BackgroundMouseOver = Brushes.Transparent;
-					be.BackgroundClick = Brushes.Transparent;
-					be.BackgroundDisabled = Brushes.Transparent;
-					be.BorderBrush = null;
-					be.BorderThickness = new(0);
+					tbe.Background = Brushes.Transparent;
+					tbe.BackgroundMouseOver = Brushes.Transparent;
+					tbe.BackgroundClick = Brushes.Transparent;
+					tbe.BackgroundDisabled = Brushes.Transparent;
+					tbe.BorderBrush = null;
+					tbe.BorderThickness = new(0);
 				}
 				else
 				{
@@ -137,14 +156,11 @@ namespace WPFCoreEx.Controls
 				}
 			}
 		}
-
-		public ImageSource ImgSource
-		{
-			set
-			{
-				this.Content = new Image() { Source = value };
-			}
-		}
 		#endregion //Helpers
+
+		protected override void OnContentChanged(object oldContent, object newContent)
+		{
+			throw new InvalidOperationException($"Use {nameof(UncheckedImage)} and {nameof(CheckedImage)} instead.");
+		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
@@ -12,7 +13,7 @@ namespace WPFCoreEx.Converters
 		{
 			for (int i = 0; i < values.Length; i++)
 			{
-				if ((bool)values[i] == false) return false;
+				if (values[i] == DependencyProperty.UnsetValue || values[i] is false) return false;
 			}
 			return true;
 		}

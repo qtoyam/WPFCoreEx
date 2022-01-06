@@ -4,19 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFCoreEx.Tests"
+		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 		xmlns:exc="clr-namespace:WPFCoreEx.Controls;assembly=WPFCoreEx"
-		xmlns:exconv="clr-namespace:WPFCoreEx.Converters;assembly=WPFCoreEx"
+		xmlns:exb="clr-namespace:WPFCoreEx.Behaviors;assembly=WPFCoreEx"
+		xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
-		Background="Black"
-		d:DataContext="{d:DesignInstance Type=local:VM, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="450" Width="800">
 	<Grid>
-		<exc:DataGridEx Style="{StaticResource DataGridEx_Transparent}" ItemsSource="{Binding Persons}"
-						ForegroundHeader="Cyan" ForegroundCell="Green">
-			<DataGrid.Columns>
-				<DataGridTextColumn Header="Aboba1" Binding="{Binding Name}" Width="100"/>
-				<DataGridTextColumn Header="Roflan2" Binding="{Binding FirstName}" Width="100"/>
-			</DataGrid.Columns>
-		</exc:DataGridEx>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<Border Padding="10" Background="Orange">
+			<StackPanel>
+				<StackPanel.Resources>
+					<Style x:Key="ReadonlyTBEx" TargetType="exc:TextBoxEx">
+						<Setter Property="Background" Value="Green"/>
+					</Style>
+				</StackPanel.Resources>
+				<exc:TextBoxEx x:Name="TB" 
+							   HorizontalAlignment="Left"
+							   ExtraWidth="50"
+							   ReadOnlyStyle="{StaticResource ReadonlyTBEx}"
+							   IsReadOnly="True"
+							   HintText="Search.."
+							   />
+			</StackPanel>
+		</Border>
+		<Border Padding="10" Background="Green"
+				Grid.Column="1">
+			<Button Grid.Column="1" Content="Toggle" Click="Button_Click"/>
+		</Border>
+		<Border Padding="10" Background="SkyBlue"
+				Grid.Column="2">
+			<Button Content="Move tb" Click="Button_Click_1"/>
+		</Border>
 	</Grid>
 </Window>
