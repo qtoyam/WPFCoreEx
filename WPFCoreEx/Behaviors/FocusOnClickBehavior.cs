@@ -1,25 +1,22 @@
 ﻿using System.Windows;
 
-using Microsoft.Xaml.Behaviors;
-
 namespace WPFCoreEx.Behaviors
 {
-	public class FocusOnClickBehavior : Behavior<UIElement>
+	public class FocusOnClickBehavior : BehaviorBase<FrameworkElement>
 	{
-		protected override void OnAttached()
+		protected override void OnSetup()
 		{
 			AssociatedObject.PreviewMouseLeftButtonUp += Click;
-			base.OnAttached();
 		}
-		protected override void OnDetaching()
+		protected override void OnCleanup()
 		{
 			AssociatedObject.PreviewMouseLeftButtonUp -= Click;
-			base.OnDetaching();
 		}
 
-		private void Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private static void Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			AssociatedObject.Focus();
+			var s = (FrameworkElement)sender;
+			s.Focus();
 		}
 	}
 }

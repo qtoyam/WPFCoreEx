@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,37 +9,7 @@ namespace WPFCoreEx.Controls
 		static TextBoxEx()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBoxEx), new FrameworkPropertyMetadata(typeof(TextBoxEx)));
-			IsReadOnlyProperty.OverrideMetadata(typeof(TextBoxEx), new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
 		}
-
-		private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((TextBoxEx)d).HandleIsReadonly();
-		}
-
-		private Style? _nonReadonlyStyle = null;
-		private void HandleIsReadonly()
-		{
-			if (IsReadOnly)
-			{
-				_nonReadonlyStyle = Style;
-				Style = ReadOnlyStyle;
-			}
-			else
-			{
-				Style = _nonReadonlyStyle;
-				_nonReadonlyStyle = null;
-			}
-		}
-
-		public Style? ReadOnlyStyle
-		{
-			get => (Style?)GetValue(ReadOnlyStyleProperty);
-			set => SetValue(ReadOnlyStyleProperty, value);
-		}
-		public static readonly DependencyProperty ReadOnlyStyleProperty =
-			DependencyProperty.Register("ReadOnlyStyle", typeof(Style), typeof(TextBoxEx),
-				new PropertyMetadata(defaultValue: null));
 
 		public string? HintText
 		{

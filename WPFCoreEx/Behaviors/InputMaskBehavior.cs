@@ -12,9 +12,9 @@ namespace WPFCoreEx.Behaviors
 		OnlyDigits = 1,
 		Custom = 128
 	}
-	public sealed class InputHandleBehavior : Behavior<TextBox>
+	public sealed class InputHandleBehavior : BehaviorBase<TextBox>
 	{
-		protected override void OnAttached()
+		protected override void OnSetup()
 		{
 			_regex = MaskType switch
 			{
@@ -24,14 +24,11 @@ namespace WPFCoreEx.Behaviors
 			};
 			AssociatedObject.PreviewTextInput += Filter_Input;
 			DataObject.AddPastingHandler(AssociatedObject, Filter_paste);
-			base.OnAttached();
 		}
-		protected override void OnDetaching()
+		protected override void OnCleanup()
 		{
 			AssociatedObject.PreviewTextInput -= Filter_Input;
 			DataObject.RemovePastingHandler(AssociatedObject, Filter_paste);
-			_regex = null!;
-			base.OnDetaching();
 		}
 
 		private Regex _regex = null!;

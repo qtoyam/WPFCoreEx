@@ -120,22 +120,43 @@ namespace WPFCoreEx.Controls
 				new PropertyMetadata(OnNoBackgroundChanged));
 		private static void OnNoBackgroundChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 		{
-			if (obj is ButtonEx be)
+			var be = (ButtonEx)obj;
+			var newVal = (bool)args.NewValue;
+			if (newVal)
 			{
-				if (args.NewValue is true)
-				{
-					be.Background = Brushes.Transparent;
-					be.BackgroundMouseOver = Brushes.Transparent;
-					be.BackgroundClick = Brushes.Transparent;
-					be.BackgroundDisabled = Brushes.Transparent;
-					be.BorderBrush = null;
-					be.BorderThickness = new(0);
-				}
-				else
-				{
-					throw new InvalidOperationException("Only true is valid, false do nothing");
-				}
+				be.Background = Brushes.Transparent;
+				be.BackgroundMouseOver = Brushes.Transparent;
+				be.BackgroundClick = Brushes.Transparent;
+				be.BackgroundDisabled = Brushes.Transparent;
+				be.BorderBrush = null;
+				be.BorderThickness = new(0);
 			}
+			else if (be.AllBackgrounds != null) //newVal == false
+			{
+				be.AllBackgrounds = be.AllBackgrounds; //re-set value
+			}
+			else //newVal == false && AllBackgrounds == null
+			{
+				throw new InvalidOperationException("False valid only if AllBackgrounds set!");
+			}
+		}
+
+		//TODO: general background
+		public Brush AllBackgrounds
+		{
+			get => (Brush)GetValue(AllBackgroundsProperty);
+			set => SetValue(AllBackgroundsProperty, value);
+		}
+		public static readonly DependencyProperty AllBackgroundsProperty =
+			DependencyProperty.Register("AllBackgrounds", typeof(Brush), typeof(ButtonEx),
+				new PropertyMetadata(defaultValue: null, OnAllBackgroundsChanged));
+		private static void OnAllBackgroundsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+		{
+			var be = (ButtonEx)obj;
+			var brush = (Brush)args.NewValue;
+			be.Background = brush;
+			be.BackgroundMouseOver = brush;
+			be.BackgroundClick = brush;
 		}
 
 		public ImageSource ImgSource

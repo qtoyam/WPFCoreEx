@@ -27,18 +27,5 @@ namespace WPFCoreEx.Tests
 		{
 			InitializeComponent();
 		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			TB.IsReadOnly = !TB.IsReadOnly;
-			//TB.Visibility = TB.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
-		}
-
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			var m = TB.Margin;
-			m.Left += 10;
-			TB.Margin = m;
-		}
 	}
 }

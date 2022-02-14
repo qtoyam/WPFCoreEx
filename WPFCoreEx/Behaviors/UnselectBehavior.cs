@@ -1,21 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 
-using Microsoft.Xaml.Behaviors;
-
 namespace WPFCoreEx.Behaviors
 {
-	public sealed class UnselectBehavior : Behavior<UIElement>
+	public sealed class UnselectBehavior : BehaviorBase<FrameworkElement>
 	{
-		protected override void OnAttached()
+		protected override void OnSetup()
 		{
 			AssociatedObject.PreviewMouseLeftButtonUp += Unselect;
-			base.OnAttached();
 		}
-		protected override void OnDetaching()
+		protected override void OnCleanup()
 		{
 			AssociatedObject.PreviewMouseLeftButtonUp -= Unselect;
-			base.OnDetaching();
 		}
 
 		public Selector Selector

@@ -3,28 +3,37 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-using Microsoft.Xaml.Behaviors;
-
 namespace WPFCoreEx.Behaviors
 {
-	public sealed class ShutdownAppBehavior : Behavior<Control>
+	public sealed class ShutdownAppBehavior : BehaviorBase<Control>
 	{
-		protected override void OnAttached()
+		protected override void OnSetup()
 		{
-			if (AssociatedObject is ButtonBase bb)
-				bb.Click += AssociatedObject_Click;
-			else if (AssociatedObject is MenuItem mi)
-				mi.Click += AssociatedObject_Click;
-			else throw new ArgumentException("Only buttonbase or menuitem is available for this behavior", AssociatedObject.Name);
-			base.OnAttached();
+			switch (AssociatedObject)
+			{
+				case ButtonBase bb:
+					bb.Click += AssociatedObject_Click;
+					break;
+				case MenuItem mi:
+					mi.Click += AssociatedObject_Click;
+					break;
+				default:
+					throw new ArgumentException("Only buttonbase or menuitem is available for this behavior", AssociatedObject.Name);
+			}
 		}
-		protected override void OnDetaching()
+		protected override void OnCleanup()
 		{
-			if (AssociatedObject is ButtonBase bb)
-				bb.Click -= AssociatedObject_Click;
-			else if (AssociatedObject is MenuItem mi)
-				mi.Click -= AssociatedObject_Click;
-			base.OnDetaching();
+			switch (AssociatedObject)
+			{
+				case ButtonBase bb:
+					bb.Click -= AssociatedObject_Click;
+					break;
+				case MenuItem mi:
+					mi.Click -= AssociatedObject_Click;
+					break;
+				default:
+					throw new InvalidOperationException($"{nameof(AssociatedObject)} wrong type");
+			}
 		}
 
 		public int ShutdownCode

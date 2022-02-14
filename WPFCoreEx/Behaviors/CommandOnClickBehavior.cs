@@ -1,21 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-using Microsoft.Xaml.Behaviors;
-
 namespace WPFCoreEx.Behaviors
 {
-	public sealed class CommandOnClickBehavior : Behavior<UIElement>
+	public sealed class CommandOnClickBehavior : BehaviorBase<FrameworkElement>
 	{
-		protected override void OnAttached()
+		protected override void OnSetup()
 		{
 			AssociatedObject.MouseLeftButtonDown += OnClick;
-			base.OnAttached();
 		}
-		protected override void OnDetaching()
+		protected override void OnCleanup()
 		{
 			AssociatedObject.MouseLeftButtonDown -= OnClick;
-			base.OnDetaching();
 		}
 
 		public ICommand Command
@@ -26,6 +22,9 @@ namespace WPFCoreEx.Behaviors
 		public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandOnClickBehavior),
 			new PropertyMetadata(defaultValue: null));
 
+		/// <summary>
+		/// Value set to <see cref="RoutedEventArgs.Handled"/>. Default is <see langword="true"/>.
+		/// </summary>
 		public bool ClickHandled
 		{
 			get => (bool)GetValue(ClickHandledProperty);

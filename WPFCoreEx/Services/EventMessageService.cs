@@ -8,7 +8,6 @@ using WPFCoreEx.Abstractions.Services;
 
 namespace WPFCoreEx.Services
 {
-#nullable enable
 	public class EventMessageService : IMessageService
 	{
 		public Window Owner { get; set; } = null!;
@@ -21,15 +20,16 @@ namespace WPFCoreEx.Services
 		public void RegisterAllDefault(Window owner)
 		{
 			Owner = owner;
-			var t = (string msg) =>
-			{
-				MessageBox.Show(owner,msg);
-			};
-			MessageReceived = t;
-			SilentMessageReceived = t;
-			WarningReceived = t;
-			ErrorReceived = t;
-			ExceptionReceived = (ex) => t(ex.Message);
+			MessageReceived = ReceiveDefault;
+			SilentMessageReceived = ReceiveDefault;
+			WarningReceived = ReceiveDefault;
+			ErrorReceived = ReceiveDefault;
+			ExceptionReceived = (ex) => ReceiveDefault(ex.Message);
+		}
+
+		private void ReceiveDefault(string msg)
+		{
+			MessageBox.Show(Owner, msg);
 		}
 
 		public void UnregisterAll()

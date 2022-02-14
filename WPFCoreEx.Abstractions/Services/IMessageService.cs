@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WPFCoreEx.Abstractions.Services
+﻿namespace WPFCoreEx.Abstractions.Services
 {
 	public interface IMessageService
 	{
