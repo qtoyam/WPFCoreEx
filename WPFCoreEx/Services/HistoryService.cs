@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 using WPFCoreEx.Abstractions.Bases;
 using WPFCoreEx.Abstractions.Services;
@@ -7,13 +7,13 @@ using WPFCoreEx.Commands;
 
 namespace WPFCoreEx.Services
 {
-	public class HistoryService : IHistoryService
+	public sealed class HistoryService : IHistoryService
 	{
 		private readonly ObservableLinkedList<HistoryItem> _undoItems = new();
 		private readonly ObservableLinkedList<HistoryItem> _redoItems = new();
 
-		public IReadOnlyCollection<HistoryItem> UndoItems { get; }
-		public IReadOnlyCollection<HistoryItem> RedoItems { get; }
+		public IObservableEnumerable<HistoryItem> UndoItems { get; }
+		public IObservableEnumerable<HistoryItem> RedoItems { get; }
 
 		public int Capacity { get; }
 
@@ -22,11 +22,11 @@ namespace WPFCoreEx.Services
 			Capacity = capacity;
 			UndoItems = _undoItems;
 			RedoItems = _redoItems;
-			UndoCommand = new(UndoInternal, CanUndoInternal);
-			RedoCommand = new(RedoInternal, CanRedoInternal);
+			UndoCommand = new(UndoInternal, CanUndoInternal, false);
+			RedoCommand = new(RedoInternal, CanRedoInternal, false);
 
-			_undoItems.PropertyChanged += OnUndoCountChanged;
-			_redoItems.PropertyChanged += OnRedoCountChanged;
+			_undoItems.CountChanged += OnUndoCountChanged;
+			_redoItems.CountChanged += OnRedoCountChanged;
 		}
 
 		public void Add(HistoryItem item)
@@ -37,6 +37,11 @@ namespace WPFCoreEx.Services
 				_undoItems.RemoveFirst();
 			}
 			_undoItems.AddLast(item);
+		}
+		public void Clear()
+		{
+			_redoItems.Clear();
+			_undoItems.Clear();
 		}
 
 		public bool Undo()
@@ -68,8 +73,8 @@ namespace WPFCoreEx.Services
 		public CommandEx UndoCommand { get; }
 		public CommandEx RedoCommand { get; }
 
-		private void OnUndoCountChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) => UndoCommand.Update();
-		private void OnRedoCountChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) => RedoCommand.Update();
+		private void OnUndoCountChanged(object? sender, EventArgs e) => UndoCommand.Update();
+		private void OnRedoCountChanged(object? sender, EventArgs e) => RedoCommand.Update();
 		#endregion //Commands
 
 		public int Undo(int undoCount)

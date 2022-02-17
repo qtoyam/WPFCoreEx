@@ -141,7 +141,6 @@ namespace WPFCoreEx.Controls
 			}
 		}
 
-		//TODO: general background
 		public Brush AllBackgrounds
 		{
 			get => (Brush)GetValue(AllBackgroundsProperty);

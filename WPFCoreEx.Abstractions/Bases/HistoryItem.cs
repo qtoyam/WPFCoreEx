@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace WPFCoreEx.Abstractions.Bases
+﻿namespace WPFCoreEx.Abstractions.Bases
 {
 	public abstract class HistoryItem
 	{
@@ -10,11 +8,11 @@ namespace WPFCoreEx.Abstractions.Bases
 		public virtual bool CanRedo() => true;
 		public abstract void Redo();
 
-		public static HistoryItem FromListRemove<T>(IList<T> source, T removedItem, int index)
-			=> new HistoryItemListRemove<T>(source, removedItem, index);
 		public static HistoryItem FromListAdd<T>(IList<T> source, T addedItem, int index)
 			=> new HistoryItemListAdd<T>(source, addedItem, index);
-		public static HistoryItem FromListChange<T>(IList<T> source, T oldItem, T newItem, int index)
+		public static HistoryItem FromListRemove<T>(IList<T> source, T removedItem, int index)
+			=> new HistoryItemListRemove<T>(source, removedItem, index);
+		public static HistoryItem FromListReplace<T>(IList<T> source, T oldItem, T newItem, int index)
 			=> new HistoryItemListChange<T>(source, oldItem, newItem, index);
 	}
 

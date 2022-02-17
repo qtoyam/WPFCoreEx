@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
+using WPFCoreEx.Abstractions.Bases;
 using WPFCoreEx.Helpers;
 
 namespace WPFCoreEx.Bases
 {
-	public class ObservableLinkedList<T> : IEnumerable<T>, INotifyPropertyChanged, INotifyCollectionChanged, IReadOnlyCollection<T>
+	public class ObservableLinkedList<T> : IObservableEnumerable<T>
 	{
 		private readonly LinkedList<T> _linkedList;
 
@@ -23,12 +25,11 @@ namespace WPFCoreEx.Bases
 			_linkedList = new(enumerable);
 		}
 
-
 		public void Clear()
 		{
 			_linkedList.Clear();
 			OnCountChanged();
-			OnListChanged(EventArgsCache.CollectionReset);
+			OnListChanged(new(NotifyCollectionChangedAction.Reset));
 		}
 
 		public void AddLast(T value)
@@ -56,7 +57,7 @@ namespace WPFCoreEx.Bases
 
 		public T RemoveLast()
 		{
-			T value = _linkedList.Last!.Value;
+			T value = _linkedList.Last!.Value; //will throw
 			_linkedList.RemoveLast();
 			OnCountChanged();
 			OnListChanged(new(NotifyCollectionChangedAction.Remove, value, Count+1));
@@ -71,16 +72,36 @@ namespace WPFCoreEx.Bases
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		#endregion //IEnumerable<T>
 
-		#region Notify changed
+		#region INotifyPropertyChanged implementation
+		private event PropertyChangedEventHandler? PropertyChanged;
+		event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged
+		{
+			add => PropertyChanged += value;
+			remove => PropertyChanged -= value;
+		}
+		#endregion //INotifyPropertyChanged implementation
+
+		#region INotifyCollectionChanged implementation
 		public event NotifyCollectionChangedEventHandler? CollectionChanged;
-		/// <summary>
-		/// Raised only when <see cref="Count"/> changed.
-		/// </summary>
-		public event PropertyChangedEventHandler? PropertyChanged;
+		#endregion //INotifyCollectionChanged implementation
 
-		private void OnCountChanged() => PropertyChanged?.Invoke(this, EventArgsCache.CountProperty);
-		private void OnListChanged(NotifyCollectionChangedEventArgs args) => CollectionChanged?.Invoke(this, args);
-		#endregion //Notify changed
+		#region INotifyCollectionChangedEx implementation
+		public event EventHandler? CountChanged;
+		#endregion //INotifyCollectionChangedEx implementation
 
+		private void OnListChanged(NotifyCollectionChangedEventArgs args)
+		{
+			CollectionChanged?.Invoke(this, args);
+		}
+
+		protected void OnPropertyChanged(PropertyChangedEventArgs args)
+		{
+			PropertyChanged?.Invoke(this, args);
+		}
+		protected void OnCountChanged()
+		{
+			OnPropertyChanged(EventArgsCache.CountProperty);
+			CountChanged?.Invoke(this, EventArgs.Empty);
+		}
 	}
 }

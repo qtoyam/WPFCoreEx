@@ -5,7 +5,6 @@ using System.Windows.Media;
 
 namespace WPFCoreEx.Controls
 {
-	//TODO: throw if trying to set content
 	public class ToggleButtonImg : ToggleButton
 	{
 		static ToggleButtonImg() => DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonImg),

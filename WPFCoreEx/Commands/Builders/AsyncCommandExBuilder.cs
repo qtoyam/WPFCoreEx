@@ -14,6 +14,7 @@ namespace WPFCoreEx.Commands.Builders
 	{
 		private Func<Task>? _executeTask;
 		private CanExecuteFunc? _canExecuteFunc;
+		private bool _cacheCanExecute = false;
 
 		public AsyncCommandExBuilder(VM viewModel, ICommandRegister commandRegister, string commandName) :
 			base(viewModel, commandRegister, commandName)
@@ -60,9 +61,15 @@ namespace WPFCoreEx.Commands.Builders
 			return this;
 		}
 
+		public AsyncCommandExBuilder<VM> CacheCanExecute()
+		{
+			_cacheCanExecute = true;
+			return this;
+		}
+
 		public AsyncCommandEx Build()
 		{
-			AsyncCommandEx command = new(_executeTask!, _canExecuteFunc); //will throw if _executeTask == null
+			AsyncCommandEx command = new(_executeTask!, _canExecuteFunc, _cacheCanExecute); //will throw if _executeTask == null
 			CommandRegister.RegisterCommand(CommandName, command, DependentProps);
 			return command;
 		}

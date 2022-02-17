@@ -5,7 +5,7 @@ namespace WPFCoreEx.Helpers
 {
 	internal static class EventArgsCache
 	{
-		internal static NotifyCollectionChangedEventArgs CollectionReset = new(NotifyCollectionChangedAction.Reset);
 		internal static PropertyChangedEventArgs CountProperty = new("Count");
+		internal static PropertyChangedEventArgs ItemIndexerProperty = new("Item[]");
 	}
 }

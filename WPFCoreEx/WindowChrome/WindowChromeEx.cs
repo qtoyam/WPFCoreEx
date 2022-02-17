@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace WPFCoreEx.WindowChrome
 {
-	//TODO: remove useless content such as stackpanel if user defines custom content
+	//TODO: remove useless content such as stackpanel if user defines custom content, set modes on bindings (mb one time)
 	public class WindowChromeEx
 	{
 

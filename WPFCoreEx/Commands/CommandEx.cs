@@ -10,15 +10,31 @@ namespace WPFCoreEx.Commands
 	{
 		private readonly Action _execute;
 		private readonly CanExecuteFunc _canExecute;
+		private bool? _cachedCanExecute;
 
-		public CommandEx(Action execute) : this(execute, null) { }
-		public CommandEx(Action execute, CanExecuteFunc? canExecute)
+		public CommandEx(Action execute, bool cacheCanExecute) : this(execute, null, cacheCanExecute) { }
+		public CommandEx(Action execute, CanExecuteFunc? canExecute, bool cacheCanExecute)
 		{
 			_execute = execute ?? throw new ArgumentNullException(nameof(execute));
 			_canExecute = canExecute ?? DefaultFuncs.True;
+			if (cacheCanExecute)
+			{
+				_cachedCanExecute = _canExecute();
+			}
 		}
 
-		public bool CanExecute() => _canExecute();
+		public bool CanExecute()
+		{
+			if (_cachedCanExecute.HasValue)
+			{
+				return _cachedCanExecute.Value;
+			}
+			else
+			{
+				return _canExecute();
+			}
+		}
+
 		public void Execute() => _execute();
 
 		/// <summary>
@@ -38,13 +54,24 @@ namespace WPFCoreEx.Commands
 			}
 		}
 
-		/// <summary>
-		/// Tells listeners to recheck <see cref="CanExecute"/>
-		/// </summary>
-		public void Update() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+		public void Update()
+		{
+			if(_cachedCanExecute.HasValue)
+			{
+				bool oldCanExecute = _cachedCanExecute.Value;
+				_cachedCanExecute = _canExecute();
+				if (oldCanExecute == _cachedCanExecute.Value) return; //don't changed, so we dont need to raise event
+			}
+			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+		}
 
 		#region ICommand
-		public event EventHandler? CanExecuteChanged;
+		private event EventHandler? CanExecuteChanged;
+		event EventHandler? ICommand.CanExecuteChanged
+		{
+			add => CanExecuteChanged += value;
+			remove => CanExecuteChanged -= value;
+		}
 		bool ICommand.CanExecute(object? parameter) => CanExecute();
 		void ICommand.Execute(object? parameter) => Execute();
 		#endregion //ICommand
@@ -76,13 +103,15 @@ namespace WPFCoreEx.Commands
 			return true;
 		}
 
-		/// <summary>
-		/// Tells listeners to recheck <see cref="CanExecute"/>
-		/// </summary>
 		public void Update() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
 		#region ICommand
-		public event EventHandler? CanExecuteChanged;
+		private event EventHandler? CanExecuteChanged;
+		event EventHandler? ICommand.CanExecuteChanged
+		{
+			add => CanExecuteChanged += value;
+			remove => CanExecuteChanged -= value;
+		}
 		bool ICommand.CanExecute(object? parameter) => CanExecute((T?)parameter);
 		void ICommand.Execute(object? parameter) => Execute((T?)parameter);
 		#endregion //ICommand

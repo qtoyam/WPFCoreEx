@@ -7,6 +7,9 @@ namespace WPFCoreEx.Abstractions.Commands
 
 	public interface ICommandUpdatable : ICommand
 	{
+		/// <summary>
+		/// Raises <see cref="ICommand.CanExecuteChanged"/> and, if enabled, update cached value of <see cref="ICommand.CanExecute(object?)"/>
+		/// </summary>
 		void Update();
 	}
 }

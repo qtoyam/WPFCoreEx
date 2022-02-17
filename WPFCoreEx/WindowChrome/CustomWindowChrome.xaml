@@ -101,6 +101,7 @@
 									</i:Interaction.Behaviors>
 								</exc:ButtonEx>
 							</DockPanel>
+							<!--Content of window-->
 							<Border Grid.Row="1">
 								<AdornerDecorator>
 									<ContentPresenter Content="{TemplateBinding Content}" />
@@ -108,7 +109,7 @@
 							</Border>
 						</Grid>
 					</Border>
-
+					<!--Fixes 8px margin-->
 					<ControlTemplate.Triggers>
 						<Trigger Property="WindowState"
 								 Value="Maximized">
