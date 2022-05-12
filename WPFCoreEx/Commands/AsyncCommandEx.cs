@@ -57,7 +57,7 @@ namespace WPFCoreEx.Commands
 		public async Task ExecuteAsync()
 		{
 			IsRunning = true;
-			await _execute().ConfigureAwait(false); //idk may fail
+			await _execute(); //should not fail
 			IsRunning = false;
 		}
 
@@ -137,7 +137,7 @@ namespace WPFCoreEx.Commands
 		public async Task ExecuteAsync(T? parameter)
 		{
 			IsRunning = true;
-			await _execute(parameter); //idk may fail
+			await _execute(parameter); //should not fail
 			IsRunning = false;
 		}
 

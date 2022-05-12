@@ -61,6 +61,15 @@ namespace WPFCoreEx.Commands.Builders
 			return this;
 		}
 
+		//public AsyncCommandExBuilder<VM> UpdatesOn(params Expression<Func<VM, P>>[] properties)
+		//{
+		//	foreach (var property in properties)
+		//	{
+		//		RegisterUpdater(property);
+		//	}
+		//	return this;
+		//}
+
 		public AsyncCommandExBuilder<VM> CacheCanExecute()
 		{
 			_cacheCanExecute = true;
@@ -129,6 +138,15 @@ namespace WPFCoreEx.Commands.Builders
 			RegisterUpdater(property);
 			return this;
 		}
+
+		//public AsyncCommandExBuilder<VM, T> UpdatesOn(params Expression<Func<VM, object>>[] properties)
+		//{
+		//	foreach (var property in properties)
+		//	{
+		//		RegisterUpdater(property);
+		//	}
+		//	return this;
+		//}
 
 		public AsyncCommandEx<T> Build()
 		{

@@ -65,6 +65,15 @@ namespace WPFCoreEx.Commands.Builders
 			return this;
 		}
 
+		//public CommandExBuilder<VM> UpdatesOn(params Expression<Func<VM, object?>>[] properties)
+		//{
+		//	foreach (var property in properties)
+		//	{
+		//		RegisterUpdater(property);
+		//	}
+		//	return this;
+		//}
+
 		public CommandExBuilder<VM> CacheCanExecute()
 		{
 			_cacheCanExecute = true;
@@ -134,6 +143,15 @@ namespace WPFCoreEx.Commands.Builders
 			RegisterUpdater(property);
 			return this;
 		}
+
+		//public CommandExBuilder<VM, T> UpdatesOn(params Expression<Func<VM, object?>>[] properties)
+		//{
+		//	foreach (var property in properties)
+		//	{
+		//		RegisterUpdater(property);
+		//	}
+		//	return this;
+		//}
 
 		public CommandEx<T> Build()
 		{

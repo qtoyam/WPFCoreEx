@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
@@ -23,7 +24,7 @@ namespace WPFCoreEx.Behaviors
 				.RemoveValueChanged(AssociatedObject, OnIsReadonlyChanged);
 		}
 
-		public static void OnIsReadonlyChanged(object? sender, EventArgs e)
+		private static void OnIsReadonlyChanged(object? sender, EventArgs e)
 		{
 			var s = (TextBoxBase)sender!;
 			if (!s.IsReadOnly)
