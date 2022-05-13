@@ -885,7 +885,7 @@
 	</Style>
 	<!--#endregion TextBoxEx-->
 
-	<!--#region ListViewEx-->
+	<!--#region ListBoxEx-->
 	<Style TargetType="{x:Type local:ListBoxEx}">
 		<Setter Property="Background"
 				Value="Transparent" />
