@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WPFCore.Behaviors\WPFCore.Behaviors.csproj" />
+    <ProjectReference Include="..\WPFCore.Converters\WPFCore.Converters.csproj" />
+  </ItemGroup>
+
+</Project>

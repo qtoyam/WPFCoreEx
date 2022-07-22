@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using WPFCoreEx.Abstractions.Bases;
 using WPFCoreEx.Abstractions.Commands;
 using WPFCoreEx.Abstractions.Exceptions;
-using WPFCoreEx.Exceptions;
 using WPFCoreEx.Helpers;
 
 using static WPFCoreEx.Helpers.ExpressionHelper;
